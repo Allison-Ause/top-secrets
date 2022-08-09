@@ -26,10 +26,19 @@ describe('/api/v1/secrets routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('/api/v1/secrets displays list of secrets to authenticated users only', async () => {
+  it('displays list of secrets to authenticated users only', async () => {
     const [agent] = await registerAndLogin();
     const res = await agent.get('/api/v1/secrets');
     expect(res.body.length).toEqual(2);
+  });
+
+  it('returns a 401 when not authenticated but trying to view secrets', async () => {
+    const res = await request(app).get('/api/v1/secrets');
+
+    expect(res.body).toEqual({
+      message: 'Sign in to view',
+      status: 401,
+    });
   });
   afterAll(() => {
     pool.end();

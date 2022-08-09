@@ -28,7 +28,7 @@ describe('/api/v1/users routes', () => {
       .post('/api/v1/users/sessions')
       .send({ email: 'test@test.com', password: '1234password' });
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Successful Login');
+    expect(res.body.message).toBe('Successful Login!');
   });
 
   afterAll(() => {
