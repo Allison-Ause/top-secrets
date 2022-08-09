@@ -28,8 +28,12 @@ describe('/api/v1/secrets routes', () => {
   });
   it('displays list of secrets to authenticated users only', async () => {
     const [agent] = await registerAndLogin();
+    console.log(agent);
     const res = await agent.get('/api/v1/secrets');
-    expect(res.body.length).toEqual(2);
+    expect(res.status).toBe(200);
+    console.log('res.body:', res.body);
+    expect(res.body.length).toBe(2);
+    expect(res.body[1].title).toEqual('007');
   });
 
   it('returns a 401 when not authenticated but trying to view secrets', async () => {
