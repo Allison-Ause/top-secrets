@@ -2,7 +2,6 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const UserService = require('../lib/services/UserService');
 
 const testUser = {
   email: 'test@test.com',
@@ -29,6 +28,7 @@ describe('/api/v1/users routes', () => {
       .post('/api/v1/users/sessions')
       .send({ email: 'test@test.com', password: '1234password' });
     expect(res.status).toBe(200);
+    expect(res.body.message).toBe('Successful Login');
   });
 
   afterAll(() => {
