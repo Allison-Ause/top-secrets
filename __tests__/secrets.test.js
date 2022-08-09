@@ -45,14 +45,12 @@ describe('/api/v1/secrets routes', () => {
 
   it('#post creates a new secret if authenticated user', async () => {
     const [agent] = await registerAndLogin();
-    console.log(agent);
     const newSecret = {
       title: 'Hardy Boys',
       description: 'An unsolved mystery of top importance!',
     };
     const res = await agent.post('/api/v1/secrets').send(newSecret);
     expect(res.status).toBe(200);
-    console.log('res.body:', res.body);
     expect(res.body).toEqual({
       id: '3',
       ...newSecret,
