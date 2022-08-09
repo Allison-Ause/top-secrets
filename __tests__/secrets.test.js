@@ -28,10 +28,8 @@ describe('/api/v1/secrets routes', () => {
   });
   it('displays list of secrets to authenticated users only', async () => {
     const [agent] = await registerAndLogin();
-    console.log(agent);
     const res = await agent.get('/api/v1/secrets');
     expect(res.status).toBe(200);
-    console.log('res.body:', res.body);
     expect(res.body.length).toBe(2);
     expect(res.body[1].title).toEqual('007');
   });
@@ -42,6 +40,23 @@ describe('/api/v1/secrets routes', () => {
     expect(res.body).toEqual({
       message: 'Sign in to view',
       status: 401,
+    });
+  });
+
+  it('#post creates a new secret if authenticated user', async () => {
+    const [agent] = await registerAndLogin();
+    console.log(agent);
+    const newSecret = {
+      title: 'Hardy Boys',
+      description: 'An unsolved mystery of top importance!',
+    };
+    const res = await agent.post('/api/v1/secrets').send(newSecret);
+    expect(res.status).toBe(200);
+    console.log('res.body:', res.body);
+    expect(res.body).toEqual({
+      id: '3',
+      ...newSecret,
+      createdAt: expect.any(String),
     });
   });
   afterAll(() => {
