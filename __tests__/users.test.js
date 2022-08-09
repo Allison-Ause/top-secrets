@@ -13,7 +13,7 @@ describe('/api/v1/users routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('/api/v1/users registers a new user', async () => {
+  it('/ registers a new user', async () => {
     const res = await request(app).post('/api/v1/users').send(testUser);
     const { email } = testUser;
 
@@ -21,6 +21,14 @@ describe('/api/v1/users routes', () => {
       id: expect.any(String),
       email,
     });
+  });
+
+  it('/sessions signs in an existing user', async () => {
+    await request(app).post('/api/v1/users').send(testUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@test.com', password: '1234password' });
+    expect(res.status).toBe(200);
   });
 
   afterAll(() => {
